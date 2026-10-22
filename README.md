@@ -4,13 +4,19 @@
 
 **把时间，留给运动。**
 
-看余票、选场次、提前准备下一次运动。
+场馆余票监测与定时预约工具
 
-[下载使用](https://github.com/jianyuanliljy-hub/ontime-booking/archive/refs/heads/main.zip) · [从这里开始](#开始使用) · [常见问题](#遇到问题先看这里)
+[![Tests](https://github.com/jianyuanliljy-hub/ontime-booking/actions/workflows/tests.yml/badge.svg)](https://github.com/jianyuanliljy-hub/ontime-booking/actions/workflows/tests.yml)
+![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)
+![零第三方依赖](https://img.shields.io/badge/运行依赖-仅_Python_标准库-14866D)
+![平台](https://img.shields.io/badge/平台-Windows_%7C_macOS_%7C_Linux-555555)
+[![License: MIT](https://img.shields.io/badge/License-MIT-14866D)](LICENSE)
+
+[下载使用](https://github.com/jianyuanliljy-hub/ontime-booking/archive/refs/heads/main.zip) · [快速开始](#开始使用) · [离线演示](#想先看看效果) · [常见问题](#遇到问题先看这里) · [进阶文档](docs/ADVANCED.md) · [参与贡献](CONTRIBUTING.md)
 
 </div>
 
-准点把余票查询和预约放在一个页面里。连接本人账号后，可以查看各时段余量，选择使用日期和时段；需要提前等待放票时，阅读须知并确认即可启动任务。
+准点将余票查询、定时预约和订单核对集中在同一页面。连接本人账号后，可以按日期与时段查看余票，提前启动预约任务，并跟踪执行进度和订单结果。
 
 ![准点的账号连接和场次选择界面](docs/assets/desktop.jpg)
 
@@ -220,9 +226,3 @@ https://tickets.example.org/easyserpApp/index.html#/branch?clubId=26&userId=AAAA
 - [进阶使用与技术说明](docs/ADVANCED.md)：命令行参数、运行记录、工作原理和测试方法。
 - [预约设计](BOOKING_DESIGN.md) · [网络拥堵与订单恢复](BACKEND_RESILIENCE.md) · [购票须知处理](BOOKING_NOTICE.md)。
 - [贡献指南](CONTRIBUTING.md) · [反馈问题](https://github.com/jianyuanliljy-hub/ontime-booking/issues) · [MIT 许可证](LICENSE)。
-
-[![Tests](https://github.com/jianyuanliljy-hub/ontime-booking/actions/workflows/tests.yml/badge.svg)](https://github.com/jianyuanliljy-hub/ontime-booking/actions/workflows/tests.yml)
-![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)
-![零第三方依赖](https://img.shields.io/badge/运行依赖-仅_Python_标准库-14866D)
-![平台](https://img.shields.io/badge/平台-Windows_%7C_macOS_%7C_Linux-555555)
-[![License: MIT](https://img.shields.io/badge/License-MIT-14866D)](LICENSE)
