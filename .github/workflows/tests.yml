@@ -12,10 +12,13 @@ jobs:
   python:
     name: Python ${{ matrix.python }} / ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    env:
+      PYTHONUTF8: '1'
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
         python: ['3.9', '3.13']
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -23,7 +26,7 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - name: Run offline regression tests
-        run: python -B -m unittest discover -v
+        run: python -B -S -m unittest discover -v
 
   frontend:
     name: Frontend / Node.js 22

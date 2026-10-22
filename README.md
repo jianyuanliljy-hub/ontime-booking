@@ -9,10 +9,10 @@
 [![Tests](https://github.com/jianyuanliljy-hub/ontime-booking/actions/workflows/tests.yml/badge.svg)](https://github.com/jianyuanliljy-hub/ontime-booking/actions/workflows/tests.yml)
 ![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)
 ![零第三方依赖](https://img.shields.io/badge/运行依赖-仅_Python_标准库-14866D)
-![平台](https://img.shields.io/badge/平台-macOS_%7C_Linux-555555)
+![平台](https://img.shields.io/badge/平台-Windows_%7C_macOS_%7C_Linux-555555)
 [![License: MIT](https://img.shields.io/badge/License-MIT-14866D)](LICENSE)
 
-[快速开始](#快速开始) · [使用指南](#使用指南) · [命令行](#命令行) · [常见问题](#常见问题) · [参与贡献](CONTRIBUTING.md)
+[快速开始](#快速开始) · [Windows 版本](#windows-版本) · [使用指南](#使用指南) · [命令行](#命令行) · [常见问题](#常见问题) · [参与贡献](CONTRIBUTING.md)
 
 </div>
 
@@ -42,7 +42,7 @@
 
 ## 快速开始
 
-需要 **Python 3.9 或更新版本**和现代浏览器，支持 macOS 和 Linux；Windows 请使用 WSL。运行时只用 Python 标准库，不需要 `pip install`、Node.js 或前端构建。
+需要 **Python 3.9 或更新版本**和现代浏览器，支持原生 Windows、macOS 和 Linux。运行时只用 Python 标准库，不需要 `pip install`、Node.js 或前端构建。
 
 ### 1. 下载项目
 
@@ -91,7 +91,7 @@ python3 "ticket_web.py" --open
 
 浏览器会打开 **[http://127.0.0.1:8765](http://127.0.0.1:8765)**。粘贴刚才复制的完整入口，点击「连接」，然后选择使用日期和时段。后续操作见[使用指南](#使用指南)。
 
-macOS 也可以双击 `启动准点.command`；系统阻止打开时使用上面的终端命令。预约期间保持终端运行，按 `Ctrl+C` 关闭服务。
+Windows 可以双击 `start-ontime.cmd`；macOS 可以双击 `启动准点.command`。预约期间保持启动窗口运行，按 `Ctrl+C` 关闭服务。
 
 端口被其他程序占用时，可换一个端口：
 
@@ -99,7 +99,34 @@ macOS 也可以双击 `启动准点.command`；系统阻止打开时使用上面
 python3 "ticket_web.py" --port 8766 --open
 ```
 
-当前程序只适配已实现的票务接口。其他系统即使填写了域名，也可能无法使用；本机预约锁使用 `fcntl`，原生 Windows 不支持。
+当前程序只适配已实现的票务接口。其他系统即使填写了域名，也可能无法使用。
+
+## Windows 版本
+
+可在 Windows 上直接运行，无需 WSL，也无需安装额外 Python 包。
+
+1. 安装 [Python 3.9 或更新版本](https://www.python.org/downloads/windows/)，确保 `py` 启动器或 `python` 命令可用。
+2. 下载仓库 ZIP，**先完整解压**到本机目录。路径中可以包含空格或中文，建议放在本人用户目录内。
+3. 按上面的说明，复制并填写一次 `site.local.json`。
+4. 双击 **`start-ontime.cmd`**。它会检查 Python 版本、启动本地服务并打开浏览器；网页中粘贴本人入口即可继续。
+
+启动文件优先使用 `py -3`，不可用时尝试 `python`。报错会留在窗口中，便于查看；不要只关闭浏览器就以为预约已停止。结束服务后，窗口提示按键即可关闭。
+
+也可以在 PowerShell 中进入项目目录后运行：
+
+```powershell
+py -3 -X utf8 "ticket_web.py" --open
+```
+
+先试用离线演示：
+
+```powershell
+py -3 -X utf8 "ui_test_server.py" --port 8766
+```
+
+随后打开 [http://127.0.0.1:8766](http://127.0.0.1:8766)。本文其他命令中的 `python3`，在 Windows 下同样可换成 `py -3 -X utf8`。启动文件会自动启用 UTF-8，避免中文输出受系统默认编码影响。
+
+Windows 的预约互斥锁使用系统自带的 `msvcrt`；macOS/Linux 继续使用 `fcntl`。如果系统缺少 `Asia/Shanghai` 时区数据库，程序按现代北京时间 **UTC+8** 计算当前预约，无需安装 `tzdata`；这一回退不用于历史夏令时日期换算。
 
 ## 使用指南
 
@@ -237,7 +264,7 @@ flowchart LR
 <details>
 <summary><strong>能在手机上用吗？</strong></summary>
 
-页面适配窄屏，但服务只监听本机回环地址，手机无法直接连接电脑上的服务。完整预约流程建议在 macOS 或 Linux 电脑上运行。
+页面适配窄屏，但服务只监听本机回环地址，手机无法直接连接电脑上的服务。完整预约流程请在 Windows、macOS 或 Linux 电脑上运行。
 
 </details>
 
@@ -275,9 +302,9 @@ node --test "test_web_ui.cjs"
 node --check "web/app.js"
 ```
 
-测试不调用真实官网、不创建真实订单；Python HTTP 测试需要允许绑定本机临时端口。GitHub Actions 在 macOS 和 Linux 上运行 Python 测试，并独立运行前端检查。
+测试不调用真实官网、不创建真实订单；Python HTTP 测试需要允许绑定本机临时端口。GitHub Actions 在 Windows、macOS 和 Linux 上运行 Python 3.9/3.13 测试，并独立运行前端检查。CI 使用 `-S` 禁用第三方包目录，验证标准库即可运行。
 
-2026-10-22 本机验证：**114 项 Python 测试、20 项前端状态测试通过**。测试覆盖站点配置、未知库存、错误日期、凭据不泄露、限时重试、服务器等待要求、单次提交、跨重启核对、旧页面状态隔离、Host/Origin/CSRF 校验等行为。测试结果对应当前软件行为；下列文档解释设计和验证范围。
+Python 测试共 **122 项**，其中 2 项启动文件测试仅在原生 Windows 执行，其他系统会跳过；前端状态测试共 **20 项**。覆盖站点配置、跨进程锁冲突与释放、中文路径、无时区数据库、未知库存、错误日期、凭据不泄露、限时重试、单次提交、跨重启核对、旧页面状态隔离、Host/Origin/CSRF 校验等行为。各平台实际结果以本次 GitHub Actions 记录为准。
 
 ```text
 .
@@ -286,6 +313,7 @@ node --check "web/app.js"
 ├── ticket_monitor.py         # 独立的只读余票查询
 ├── ticket_config.py          # 本机站点配置与校验
 ├── site.example.json         # 虚构站点配置示例
+├── start-ontime.cmd          # Windows 双击启动入口
 ├── web/                      # 无构建步骤的 HTML、CSS、JavaScript
 ├── test_*.py                 # Python 回归测试
 ├── test_web_ui.cjs            # 前端状态测试

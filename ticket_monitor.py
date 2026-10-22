@@ -10,12 +10,21 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
-from datetime import date, datetime
-from zoneinfo import ZoneInfo
+from datetime import date, datetime, timedelta, timezone
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from ticket_config import SITE
 
 
+def booking_timezone():
+    """优先使用系统时区；缺少时区数据库时按现代北京时间 UTC+8 运行。"""
+    try:
+        return ZoneInfo("Asia/Shanghai")
+    except ZoneInfoNotFoundError:
+        return timezone(timedelta(hours=8), "Asia/Shanghai")
+
+
+TZ = booking_timezone()
 BASE_URL = SITE.origin + "/easyserpClient/"
 VENUE = SITE.venue
 READ_PATHS = frozenset({
@@ -192,7 +201,7 @@ class TicketClient:
         if target_date and not rows:
             notes.append("官网尚未返回目标日期的余量，不能判断该日无票。")
         return {
-            "checked_at": datetime.now(ZoneInfo("Asia/Shanghai")).isoformat(timespec="seconds"),
+            "checked_at": datetime.now(TZ).isoformat(timespec="seconds"),
             "venue": VENUE, "target_date": target_date, "requested_slots": list(slots),
             "returned_dates": returned_dates,
             "queried_ticket_count": len(items), "notes": notes,

@@ -77,7 +77,7 @@ class FixtureHandler(Handler):
     def do_GET(self):
         if self.path == "/":
             self.local_origin()
-            html = (ROOT / "web/index.html").read_text()
+            html = (ROOT / "web/index.html").read_text(encoding="utf-8")
             html = html.replace("<main>", '<main><div class="page-alert">本机演练 · 全部为模拟数据，不连接官网、不创建真实订单。</div>')
             return self.send(200, html.encode(), "text/html; charset=utf-8")
         return super().do_GET()

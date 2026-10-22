@@ -2,7 +2,7 @@
 """定时预约原型：单账号、单场次、单张免费票；默认仅检查，--execute 才会下单。"""
 
 import argparse
-import fcntl
+import errno
 import getpass
 import hashlib
 import http.client
@@ -22,15 +22,19 @@ from email.utils import parsedate_to_datetime
 from html.parser import HTMLParser
 from pathlib import Path
 
+if os.name == "nt":
+    import msvcrt
+else:
+    import fcntl
+
 from ticket_config import SITE
 
 from ticket_monitor import (
-    MonitorError, READ_PATHS, TicketClient, VENUE, ZoneInfo,
+    MonitorError, READ_PATHS, TicketClient, VENUE, TZ,
     normalize_slot, parse_entry_url, ticket_rows,
 )
 
 
-TZ = ZoneInfo("Asia/Shanghai")
 QUERY_PATHS = READ_PATHS | {
     "ticket/getSaleTicketExplanation", "ticket/buyTicketRule", "ticket/getTicketOrders",
     "configurable/getConfigInfo", "common/getHealthCommitment",
@@ -495,16 +499,30 @@ class Attempt:
     def __enter__(self):
         self.directory.mkdir(parents=True, exist_ok=True)
         fd = os.open(self.lock_path, os.O_CREAT | os.O_RDWR, 0o600)
-        self.lock = os.fdopen(fd, "r+")
+        self.lock = os.fdopen(fd, "r+b")
         try:
-            fcntl.flock(self.lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except BlockingIOError:
+            if os.name == "nt":
+                # Windows 允许锁住文件末尾之外的首字节，无需写入或改动旧锁文件。
+                self.lock.seek(0)
+                msvcrt.locking(self.lock.fileno(), msvcrt.LK_NBLCK, 1)
+            else:
+                fcntl.flock(self.lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError as exc:
             self.lock.close()
-            raise MonitorError("本机已有同账号、同场次预约程序运行。") from None
+            self.lock = None
+            if exc.errno in {errno.EACCES, errno.EAGAIN, errno.EDEADLK}:
+                raise MonitorError("本机已有同账号、同场次预约程序运行。") from None
+            raise
         return self
 
     def __exit__(self, *args):
-        self.lock.close()
+        try:
+            if os.name == "nt":
+                self.lock.seek(0)
+                msvcrt.locking(self.lock.fileno(), msvcrt.LK_UNLCK, 1)
+        finally:
+            self.lock.close()
+            self.lock = None
 
     def begin(self, plan):
         # 先持久化提交意图再发送 POST。此文件存在时不再创建订单。

@@ -4,7 +4,7 @@
 
 ## 开始前
 
-阅读 [README](README.md) 和 [预约设计](BOOKING_DESIGN.md)。预约后端使用 `fcntl`，请在 macOS 或 Linux 开发；Python 需为 3.9+，前端测试使用 Node.js 22+。无需安装第三方包。
+阅读 [README](README.md) 和 [预约设计](BOOKING_DESIGN.md)。支持原生 Windows、macOS 和 Linux；Python 需为 3.9+，前端测试使用 Node.js 22+。无需安装第三方包。Windows 命令行可将本文的 `python3` 换为 `py -3 -X utf8`。
 
 复现页面问题时，优先运行离线服务：
 
@@ -33,6 +33,10 @@ node --check "web/app.js"
 ```
 
 测试均离线运行；Python HTTP 测试需要本机临时端口权限。修复缺陷时，增加能重现问题、验证行为的回归测试。纯文档或样式调整不需要为了凑数量新增测试。
+
+跨平台修改需保留两种原生锁：Windows 的 `msvcrt` 字节锁、macOS/Linux 的 `fcntl` 文件锁。共享相同的锁文件命名与提交记录，不删除旧锁文件。`test_platform_support.py` 会启动真实子进程核验互斥、正常退出及异常退出后的释放；两个 `.cmd` 测试只在 Windows 运行。
+
+`.cmd` 文件由 `.gitattributes` 指定 CRLF；脚本正文保持 ASCII，Python 进程显式启用 UTF-8。不要依赖系统代码页，也不要假定 Windows 的文件模式位等价于 POSIX `0600`。CI 使用 `python -B -S -m unittest discover -v`，避免第三方时区包掩盖标准库运行问题。
 
 涉及页面时，用离线服务检查相关操作、刷新后的状态、错误提示与窄屏布局。写明实际测试过的浏览器和视口，不把模拟出票描述为真实成功。
 

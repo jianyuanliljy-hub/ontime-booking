@@ -2,6 +2,7 @@
 
 import http.client
 import json
+import os
 import socket
 import tempfile
 import threading
@@ -189,11 +190,12 @@ class NetworkTests(unittest.TestCase):
             client.detail(1593)
         with tempfile.TemporaryDirectory() as directory:
             path = save_diagnostics(client, directory, "error")
-            data = path.read_text()
+            data = path.read_text(encoding="utf-8")
             self.assertNotIn("SECRET", data)
             self.assertNotIn("userId", data)
             self.assertEqual(json.loads(data)["timings"][0]["outcome"], "timeout")
-            self.assertEqual(path.stat().st_mode & 0o777, 0o600)
+            if os.name != "nt":
+                self.assertEqual(path.stat().st_mode & 0o777, 0o600)
             self.assertNotEqual(path, save_diagnostics(client, directory, "error"))
 
     def run_slow_socket(self, script):
