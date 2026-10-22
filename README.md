@@ -20,11 +20,17 @@
 
 第一次按下面的顺序操作。之后通常只需双击启动、粘贴本人入口。
 
-### 1. 下载到电脑并解压
+### 1. 按系统下载并解压
 
-点击 **[下载项目 ZIP](https://github.com/jianyuanliljy-hub/ontime-booking/archive/refs/heads/main.zip)**，将整个文件夹解压到自己的电脑上。
+按你使用的系统查看下面这一行。三个系统使用同一份项目 ZIP，解压和启动方式各有不同。
 
-**先解压，再运行。** 不要直接在压缩包里双击启动文件。
+| 你的系统 | 下载与解压 | 运行前准备 |
+| --- | --- | --- |
+| **Windows** | [下载 ZIP](https://github.com/jianyuanliljy-hub/ontime-booking/archive/refs/heads/main.zip)，右键选择「全部解压」 | 安装 [Windows 版 Python 3.9+](https://www.python.org/downloads/windows/)，确保 `py` 或 `python` 命令可用 |
+| **macOS** | [下载 ZIP](https://github.com/jianyuanliljy-hub/ontime-booking/archive/refs/heads/main.zip)，双击压缩包解压 | 确认已安装 Python 3.9+，且 `python3` 命令可用；尚未安装可前往 [Python 官网](https://www.python.org/downloads/) |
+| **Linux** | [下载 ZIP](https://github.com/jianyuanliljy-hub/ontime-booking/archive/refs/heads/main.zip)，解压到自己的目录 | 确认 `python3` 版本为 3.9 或更新版本 |
+
+**先完整解压，完成第 2、3 步，再启动。** 不要直接在压缩包里双击启动文件。各系统的启动入口见第 4 步。
 
 ### 2. 从手机复制本人预约入口
 
@@ -68,11 +74,11 @@ Windows 请确认文件名没有变成 `site.local.json.txt`。macOS 编辑时�
 
 ### 4. 启动准点，粘贴链接并连接
 
-电脑需要安装 **Python 3.9 或更新版本**。除此之外，无需安装其他运行包。
+完成前面的准备和场馆设置后，按自己的系统启动，无需安装其他运行包。
 
 | 你的电脑 | 怎么启动 |
 | --- | --- |
-| **Windows** | 双击 **`start-ontime.cmd`**；提示找不到 Python 时，先安装 [Windows 版 Python](https://www.python.org/downloads/windows/)，确保 `py` 或 `python` 命令可用，再双击一次 |
+| **Windows** | 双击 **`start-ontime.cmd`** |
 | **macOS** | 双击 **`启动准点.command`**；若无法打开，用终端在项目目录运行 `python3 "ticket_web.py" --open` |
 | **Linux** | 在项目目录运行 `python3 "ticket_web.py" --open` |
 
