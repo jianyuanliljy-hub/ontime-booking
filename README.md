@@ -95,13 +95,17 @@ Windows 可以原生运行，无需 WSL。启动后出现的窗口要保持打�
 3. 需要预约时，点 **「开始抢票」**，阅读完整须知，勾选同意后再确认。
 4. 任务启动后查看页面进度。只有明确查到对应订单，页面才会显示确认出票；最后回到官方平台查看凭证。
 
-![连接后查看全部时段余量](docs/assets/overview.jpg)
+<p align="center">
+  <a href="docs/assets/overview.jpg"><img src="docs/assets/overview.jpg" alt="离线演示：日期、时段与余票总览局部原图" width="610"></a>
+</p>
 
-*离线演示：日期和余票均为模拟。总览卡用于选时段，之后仍需点击「检查余票」。*
+*离线演示：日期和余票均为模拟。这里聚焦日期、时段和余票总览，可点击图片查看原图。点选目标时段后，仍需点击「检查余票」。*
 
-![阅读购票须知并确认所选场次](docs/assets/confirmation.jpg)
+<p align="center">
+  <a href="docs/assets/confirmation.jpg"><img src="docs/assets/confirmation.jpg" alt="离线演示：购票须知、同意勾选与确认按钮局部原图" width="520"></a>
+</p>
 
-*离线演示：检查日期和时段，阅读须知后勾选同意。截图未确认预约，不代表真实出票。*
+*离线演示：检查日期和时段，阅读须知后勾选同意。图片按原始大小显示，可点击查看。截图停在未勾选、未提交的状态，不代表真实出票。*
 
 未到预计放票时间时，可以提前启动等待；预计时间已过时，按钮会显示「立即开始抢票」。当前无票、余量未知、已有订单等情况会在结果卡中分别说明。
 
@@ -201,7 +205,9 @@ macOS/Linux：python3 "ui_test_server.py" --port 8766
 https://tickets.example.org/easyserpApp/index.html#/branch?clubId=26&userId=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 ```
 
-选择 `2099-09-17` 可以看到模拟库存。演示不连接官网，不创建真实订单，不能用来查询实际余票。
+选择 `2099-09-17` 可以看到模拟库存。可以先练习切换日期、点选时段、检查余票，再打开须知确认窗口，熟悉界面后再连接本人入口。
+
+演示不连接官网，不创建真实订单，不能用来查询实际余票。
 
 ## 关于这个项目
 
