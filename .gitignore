@@ -1,0 +1,25 @@
+# 本人账号、订单与运行现场：只留在本机
+/.local-history/
+/site.local.json
+/ui-review/
+/booking-state/
+/booking-diagnostics/
+/*-probe-*.json
+/verification-*.json
+
+# Python 与本地环境
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.env.*
+*.log
+
+# 编辑器与操作系统
+.DS_Store
+.idea/
+.vscode/
+
+# 前端测试不需要安装依赖
+node_modules/

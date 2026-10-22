@@ -1,0 +1,47 @@
+name: 问题反馈
+description: 报告可复现的错误或异常状态
+title: '[Bug] '
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请先查看 README 的常见问题。不要提交真实入口、userId、token、订单号或个人信息。安全漏洞请按 SECURITY.md 私密报告。
+  - type: textarea
+    id: environment
+    attributes:
+      label: 运行环境
+      description: 系统、Python 版本、浏览器与项目版本（如提交 SHA）。
+      placeholder: macOS / Python 3.9 / Safari / 提交 SHA
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      description: 说明使用网页还是命令行，以及触发问题的最少步骤。
+      placeholder: |
+        1. 启动离线演示
+        2. 选择日期和时段
+        3. 点击……
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期结果
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际结果
+      description: 可附脱敏截图、错误信息或必要诊断片段；注明是真实查询还是离线演示。
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: 隐私检查
+      options:
+        - label: 我已移除私人入口、账号标识、登录凭据与订单信息。
+          required: true

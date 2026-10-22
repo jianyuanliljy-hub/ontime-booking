@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>准点 · 体育馆预约</title>
+  <link rel="stylesheet" href="/app.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="wordmark" href="/" aria-label="准点首页">准点<span>ON TIME</span></a>
+      <div class="topbar-right"><span class="local-label"><i></i>仅在本机运行</span><button class="text-button" id="help-button" type="button">使用说明</button></div>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">为下一次运动，提前准备</p>
+        <h1 id="page-title">把时间，留给运动。</h1>
+        <p class="intro-copy">选好场次，余下的交给准点。</p>
+      </section>
+
+      <div class="page-alert" id="page-alert" role="alert" hidden></div>
+      <section class="recovery-banner" id="recovery-banner" hidden>
+        <div><strong>有一笔预约还需要确认</strong><p id="recovery-copy"></p></div>
+        <button class="text-button" id="recovery-button" type="button">核对订单</button>
+      </section>
+
+      <section class="booking-card" aria-label="体育馆预约">
+        <div class="configuration">
+          <div class="venue-heading"><div><p class="section-kicker">场馆预约</p><h2>目标体育馆</h2></div><span class="ticket-type">健身票</span></div>
+
+          <section class="account-section" aria-labelledby="account-title">
+            <div class="section-heading"><h3 id="account-title">账号连接</h3><span class="connection-status" id="connection-status">尚未连接</span></div>
+            <form id="connection-form">
+              <label class="sr-only" for="entry">场馆官方预约入口链接</label>
+              <div class="connection-input"><input id="entry" type="password" placeholder="粘贴“个人锻炼”页面复制的链接" autocomplete="off" spellcheck="false" maxlength="4096" required><button id="connect-button" type="submit">连接</button></div>
+              <p class="field-hint">打开场馆官方预约入口，进入场馆选择页并保持未选择状态，通过页面菜单复制链接。</p>
+            </form>
+            <p class="field-error" id="account-error" role="alert" hidden></p>
+            <div class="connected-account" id="connected-account" hidden><div><strong>官方预约平台账号已连接</strong><p id="verified-at"></p></div><button class="text-button" id="change-entry" type="button">更换入口</button></div>
+          </section>
+
+          <section class="selection-section" aria-labelledby="selection-title">
+            <h3 id="selection-title">选择场次</h3>
+            <div class="date-row"><label for="use-day">使用日期</label><input type="date" id="use-day" required aria-describedby="date-hint"></div>
+            <div class="date-shortcuts" role="group" aria-label="快捷选择使用日期"><button id="day-today" type="button">今天</button><button id="day-tomorrow" type="button">明天</button><span>切换日期后查询全部时段</span></div>
+            <p class="sr-only" id="date-hint">请选择实际到馆使用的日期。切换日期后会查询该日全部时段余票，预计放票时间会在右侧显示。</p>
+            <div class="time-heading"><span id="slot-label">使用时段</span><span>北京时间</span></div>
+            <div class="slot-grid" id="slots" role="group" aria-labelledby="slot-label"></div>
+            <section class="overview-panel" id="overview-panel" aria-labelledby="overview-title" hidden>
+              <div class="overview-heading"><div><strong id="overview-title">余票总览</strong><span id="overview-updated"></span></div><button class="text-button" id="overview-refresh" type="button">查询该日全部余票</button></div>
+              <div class="overview-grid" id="overview-grid" role="list"></div>
+              <p class="overview-note" id="overview-note"></p>
+            </section>
+          </section>
+
+          <div class="quiet-note"><span class="note-line"></span><p>入口失效时，重新复制粘贴即可。<br>无需在这里填写学号或密码。</p></div>
+        </div>
+
+        <aside class="booking-summary" aria-labelledby="summary-title">
+          <div class="summary-top"><h3 id="summary-title">你的下一场</h3><span class="status-pill" id="stock-status">待检查</span></div>
+          <div class="result-banner neutral" id="result-banner" role="status" aria-live="polite" hidden>
+            <span class="result-mark" aria-hidden="true"></span>
+            <div class="result-body"><strong id="result-title">等待检查</strong><p id="result-detail"></p></div>
+            <span class="result-time" id="result-time"></span>
+          </div>
+          <div class="selected-session"><p class="selected-date" id="selected-date">—</p><p class="selected-weekday" id="selected-weekday"></p><p class="selected-slot" id="selected-slot">06:00<span>—</span>07:30</p></div>
+          <div class="ticket-meta"><span>1 张健身票</span><span class="price">¥ 0<span> / 张</span></span></div>
+          <div class="release-info"><span class="small-label" id="release-label">预计放票</span><strong id="release-time">—</strong><p id="release-note">按场馆规则，通常在前一天该时段结束时开放。</p></div>
+
+          <div class="progress-panel" id="progress-panel" role="status" aria-live="polite" hidden><span class="progress-dot" id="progress-dot"></span><div><strong id="progress-title"></strong><p id="progress-copy"></p><span class="progress-elapsed" id="progress-elapsed"></span></div></div>
+          <div class="countdown" id="countdown" hidden><span>距离预计放票</span><strong id="countdown-value"></strong></div>
+          <div class="summary-actions"><button class="primary-button" id="primary-button" type="button" disabled>检查余票</button><button class="secondary-action" id="secondary-button" type="button" hidden>重新检查</button></div>
+          <p class="action-hint" id="action-hint">连接账号后，即可检查并开始抢票。</p>
+        </aside>
+      </section>
+
+      <footer class="page-footer"><p>预约期间，请保持电脑唤醒、本地服务运行。</p><span>个人预约工具 · 非官方服务</span></footer>
+    </main>
+  </div>
+
+  <dialog id="confirm-dialog" aria-labelledby="confirm-title">
+    <div class="dialog-content"><p class="section-kicker">最后确认一下</p><h2 id="confirm-title">开始抢票</h2><p class="dialog-intro">现在启动任务。放票前准备，放票时高频查询；发现有票后按官网规则只提交一次。</p>
+      <div class="confirmation-detail"><strong>目标体育馆</strong><p id="confirm-session"></p><span>健身票 · 1 张 · 合计 ¥0</span></div>
+      <div class="confirm-release"><span id="confirm-release-label">预计放票</span><strong id="confirm-release"></strong></div>
+      <h3 class="notice-heading">购票须知</h3><div class="notice-text" id="notice-text" tabindex="0" role="region" aria-label="完整购票须知"></div>
+      <label class="accept-row"><input id="accept-notice" type="checkbox"><span>我已阅读并同意购票须知，授权预约上述 1 张 0 元票。</span></label>
+      <p class="confirm-footnote">是否出票以官网订单结果为准。关闭网页后任务继续；退出本地服务或电脑休眠会影响预约。</p>
+      <p class="page-alert" id="confirm-error" role="alert" hidden></p><div class="dialog-actions"><button id="confirm-back" class="outline-button" type="button">返回</button><button id="confirm-submit" class="primary-button" type="button" disabled>确认预约</button></div>
+    </div>
+  </dialog>
+
+  <dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-content help-content"><p class="section-kicker">简单三步</p><h2 id="help-title">开始下一次预约</h2>
+    <ol class="help-steps"><li><span>01</span><div><h3>复制入口</h3><p>打开场馆官方预约入口，进入场馆选择页后保持未选择状态。通过页面菜单复制原始链接，粘贴到账号连接框。</p></div></li><li><span>02</span><div><h3>先看全部余票</h3><p>连接后会自动查询默认日期的全部时段。默认查今天；当天最后一个时段结束后切到明天。点选目标时段后，再检查这场预约。</p></div></li><li><span>03</span><div><h3>开始抢票</h3><p>阅读须知并确认开始抢票。任务会在放票前启动准备，到点高频查询；本地服务和电脑需保持运行。</p></div></li></ol>
+    <div class="help-details"><h3>链接需要每次更换吗？</h3><p>不一定。这里会实际检查入口能否登录，无法提前保证有效期。程序重启后需要重新粘贴；如果提示失效，请按上面的路径重新进入「个人锻炼」，保持未选择状态，再从右上角复制。</p><h3>为什么检查余票需要几秒钟？</h3><p>检查会依次确认登录、场馆规则、票种和价格、目标日期余量、购票须知以及本人已有订单。查询过程只读，不会创建订单；官网拥堵时可能需要更久，页面会显示正在进行的具体步骤和已用时间。</p><h3>点“开始抢票”后会怎样？</h3><p>任务会在放票前准备登录和本人订单核对，到放票时每约 0.5 秒串行查询目标票种，最多运行 30 秒。发现有票后还要按官网要求再次核对规则、须知和余量，完成须知倒计时后只发送一次订单请求，随后只读核对订单。不会无限刷新，也不会因网络无响应自动重复下单。</p><h3>关于放票时间</h3><p>预计时间按官网公布的规则推算，实际开放和临时闭馆安排以官方预约平台为准。当前仍未验证真实抢票成功率。</p></div>
+    <button class="primary-button" id="help-close" type="button">知道了</button></div></dialog>
+</body>
+</html>
